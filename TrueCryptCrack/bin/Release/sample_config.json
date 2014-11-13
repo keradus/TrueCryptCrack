@@ -1,0 +1,12 @@
+{
+    "debug": true,
+    "device": "\\Device\\Harddisk1\\Partition3",
+    "dictionaryFile": "sample_passwords.txt",
+    "dictionaryMap": {
+        "0": "Foo",
+        "1": "Bar",
+        "x": "Xxx"
+    },
+    "mountLetter": "q",
+    "exe": "D:\\Program Files\\TrueCrypt\\TrueCrypt.exe"
+}

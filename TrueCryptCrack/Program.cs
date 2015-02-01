@@ -15,7 +15,7 @@ namespace TrueCryptCrack
         {
             if (args.Length != 1)
             {
-                Console.WriteLine("no config file passed");
+                Console.WriteLine("No config file passed");
                 return;
             }
 
@@ -31,11 +31,27 @@ namespace TrueCryptCrack
             cracker.Device = expandoConfig.device;
             cracker.MountLetter = expandoConfig.mountLetter;
             cracker.DictionaryFile = expandoConfig.dictionaryFile;
-            cracker.DictionaryMap = new Dictionary<char, string>();
 
-            foreach (KeyValuePair<string, object> item in expandoConfig.dictionaryMap)
+            if (((IDictionary<String, object>)expandoConfig).ContainsKey("dictionaryMap"))
             {
-                cracker.DictionaryMap[item.Key[0]] = item.Value.ToString();
+                cracker.DictionaryMap = new Dictionary<char, string>();
+                foreach (KeyValuePair<string, object> item in expandoConfig.dictionaryMap)
+                {
+                    cracker.DictionaryMap[item.Key[0]] = item.Value.ToString();
+                }
+            }
+
+            if (((IDictionary<String, object>)expandoConfig).ContainsKey("toolType"))
+            {
+                try
+                {
+                    cracker.UsedToolType = (Cracker.ToolType)Enum.Parse(typeof(Cracker.ToolType), expandoConfig.toolType);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Invalid toolType");
+                    return;
+                }
             }
 
             string password = cracker.FindPassword();

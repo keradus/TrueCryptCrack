@@ -1,0 +1,8 @@
+{
+    "debug": true,
+    "device": "pt1",
+    "dictionaryFile": "sample_passwords_full.txt",
+    "mountLetter": "g:",
+    "exe": "C:\\Program Files\\dcrypt\\dccon.exe",
+    "toolType": "DiskCryptor"
+}

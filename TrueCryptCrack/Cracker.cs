@@ -7,19 +7,28 @@ namespace TrueCryptCrack
 {
     class Cracker
     {
+        public enum ToolType
+        {
+            TrueCrypt,
+            DiskCryptor
+        }
+
         public bool Debug = false;
         public string Device = null;
         public string DictionaryFile = null;
         public Dictionary<char, string> DictionaryMap = null;
         public string Exe = null;
         public string MountLetter = null;
+        public ToolType UsedToolType = ToolType.TrueCrypt;
 
         public bool CheckPass(string password)
         {
             Process tc = new Process();
 
             tc.StartInfo.FileName = this.Exe;
-            tc.StartInfo.Arguments = string.Format("/v \"{0}\" /l \"{1}\" /p \"{2}\" /q /s", this.Device, this.MountLetter, password);
+            tc.StartInfo.Arguments = this.PrepareProcessArguments(password);
+            tc.StartInfo.CreateNoWindow = false;
+            tc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
             tc.Start();
             tc.WaitForExit();
@@ -78,6 +87,16 @@ namespace TrueCryptCrack
             }
 
             file.Close();
+        }
+
+        public string PrepareProcessArguments(string password)
+        {
+            if (this.UsedToolType == ToolType.TrueCrypt)
+            {
+                return string.Format("/v \"{0}\" /l \"{1}\" /p \"{2}\" /q /s", this.Device, this.MountLetter, password);
+            }
+
+            return string.Format("-mount \"{0}\" -mp \"{1}\" -p \"{2}\"", this.Device, this.MountLetter, password);
         }
     }
 }
